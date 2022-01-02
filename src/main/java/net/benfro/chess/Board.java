@@ -1,24 +1,24 @@
 package net.benfro.chess;
 
-public class Board {
+public class Board extends DefaultGrid<Piece> {
 
-   final int SIZE = 8;
-   private final Piece[][] board;
+   final static int SIZE = 8;
 
    public Board() {
-      board = new Piece[SIZE][];
-      for (int i = 0; i < SIZE; i++) {
-         board[i] = new Piece[SIZE];
-      }
+      super(SIZE, SIZE);
    }
 
    public void place(Piece piece, String square) {
-      board[indexOf(square)][Integer.parseInt(square.substring(1)) - 1] = piece;
+      setElement(piece, indexOf(square), getColumnIdx(square));
       piece.setPosition(square);
    }
 
+   private int getColumnIdx(String square) {
+      return Integer.parseInt(square.substring(1)) - 1;
+   }
+
    public Piece get(String square) {
-      return board[indexOf(square)][Integer.parseInt(square.substring(1)) - 1];
+      return elementAt(indexOf(square), getColumnIdx(square));
    }
 
    public boolean move(String from, String to) {
@@ -27,6 +27,7 @@ public class Board {
       if (toPiece == null || toPiece.getType() != piece.getType()) {
          return true;
       }
+      return false;
    }
 
    private int indexOf(String square) {

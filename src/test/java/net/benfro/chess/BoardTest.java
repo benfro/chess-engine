@@ -44,35 +44,16 @@ class BoardTest {
    @Test
    void testMovePawn() {
       board.place(piece, "a2");
-      assertTrue(board.move("a2", "a3"));
+      assertTrue(board.isMovePossible("a2", "a3"));
    }
 
    @Test
-   void testByValue() {
-      int in = 1;
-      assertEquals(2, add(in));
-      assertEquals(1, in);
-
-      IntHolder intHolder = new IntHolder(1);
-      assertEquals(2, add(intHolder).value);
-      assertEquals(2, intHolder.value);
+   void testDoMove() {
+      board.place(piece, "a2");
+      board.doMove(Move.of("a2", "a3"));
+      assertNull(board.get("a2"));
+      assertEquals(piece, board.get("a3"));
    }
 
-   static class IntHolder {
-      public int value;
 
-      public IntHolder(int value) {
-         this.value = value;
-      }
-   }
-
-   private IntHolder add(IntHolder holder) {
-      holder.value = holder.value + 1;
-      return holder;
-   }
-
-   private int add(int first) {
-      first = first + 1;
-      return first;
-   }
 }

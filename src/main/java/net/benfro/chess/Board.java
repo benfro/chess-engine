@@ -10,7 +10,9 @@ public class Board extends DefaultGrid<Piece> {
 
    public void place(Piece piece, String square) {
       setElement(piece, indexOf(square), getColumnIdx(square));
-      piece.setPosition(square);
+      if (piece != null) {
+         piece.setPosition(square);
+      }
    }
 
    private int getColumnIdx(String square) {
@@ -21,7 +23,7 @@ public class Board extends DefaultGrid<Piece> {
       return elementAt(indexOf(square), getColumnIdx(square));
    }
 
-   public boolean move(String from, String to) {
+   public boolean isMovePossible(String from, String to) {
       Piece piece = get(from);
       Piece toPiece = get(to);
       if (toPiece == null || toPiece.getType() != piece.getType()) {
@@ -34,5 +36,12 @@ public class Board extends DefaultGrid<Piece> {
       String a = "abcdefgh";
       char c = square.charAt(0);
       return a.indexOf(c);
+   }
+
+   // Synchronize?
+   public void doMove(Move move) {
+      Piece piece = get(move.from);
+      place(piece, move.to);
+      place(null, move.from);
    }
 }

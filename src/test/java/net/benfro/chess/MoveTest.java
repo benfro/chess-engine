@@ -1,7 +1,6 @@
 package net.benfro.chess;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -55,7 +54,18 @@ class MoveTest {
       assertEquals(expectedResult, Move.of(from, to).isHorizontal());
    }
 
-   @Test
-   void isTwoPlusOne() {
+   @ParameterizedTest
+   @CsvSource(value = {
+           "a1,a2,false",
+           "a2,a1,false",
+           "a2,a2,false",
+           "a2,b2,false",
+           "a2,b3,false",
+           "a1,b3,true",
+           "a2,c1,true",
+           "a2,c3,true",
+   })
+   void isTwoPlusOne(String from, String to, boolean expectedResult) {
+      assertEquals(expectedResult, Move.of(from, to).isTwoPlusOne());
    }
 }

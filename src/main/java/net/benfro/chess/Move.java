@@ -30,11 +30,11 @@ public class Move {
 
    private int getHorizontalDelta(String from, String to) {
       String a = "abcdefgh";
-      return a.indexOf(to.charAt(0)) - a.indexOf(from.charAt(0));
+      return Math.abs(a.indexOf(to.charAt(0)) - a.indexOf(from.charAt(0)));
    }
 
    private int getVerticalDelta(String from, String to) {
-      return Integer.parseInt(to.substring(1)) - Integer.parseInt(from.substring(1));
+      return Math.abs(Integer.parseInt(to.substring(1)) - Integer.parseInt(from.substring(1)));
    }
 
    public boolean isHorizontal() {
@@ -42,6 +42,8 @@ public class Move {
    }
 
    public boolean isTwoPlusOne() {
-      return false;
+      int verticalDelta = getVerticalDelta(from, to);
+      int horizontalDelta = getHorizontalDelta(from, to);
+      return (verticalDelta == 2 && horizontalDelta == 1) ^ (verticalDelta == 1 && horizontalDelta == 2);
    }
 }

@@ -2,10 +2,12 @@ package net.benfro.chess;
 
 import com.google.common.collect.Lists;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
-public class DefaultGrid<E> {
+@ToString
+public abstract class DefaultGrid<E> {
 
    @Getter
    private final int colSize;
@@ -16,15 +18,10 @@ public class DefaultGrid<E> {
    public DefaultGrid(int colSize, int rowSize) {
       this.colSize = colSize;
       this.rowSize = rowSize;
-      this.grid = Lists.newArrayListWithExpectedSize(rowSize);
-      for (int i = 0; i < rowSize; i++) {
-         List<E> row = Lists.newArrayListWithExpectedSize(colSize);
-         for (int j = 0; j < colSize; j++) {
-            row.add(null);
-         }
-         grid.add(row);
-      }
+      grid = initGrid();
    }
+
+   abstract protected List<List<E>> initGrid();
 
    public E elementAt(int row, int column) {
       return grid.get(row).get(column);
@@ -35,7 +32,15 @@ public class DefaultGrid<E> {
    }
 
    public List<E> getAllElements() {
-      return null;
+      List<E> out = Lists.newArrayList();
+      for (List<E> l : grid) {
+         out.addAll(l);
+      }
+      return out;
+   }
+
+   public void clear() {
+      grid.forEach(List::clear);
    }
 }
 

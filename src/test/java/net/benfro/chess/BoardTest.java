@@ -19,7 +19,7 @@ class BoardTest {
 
    @Test
    void testGetShouldBeNull() {
-      assertNull(board.get("a1"));
+      assertEquals(Piece.emptyOf(), board.get("a1"));
    }
 
    @Test

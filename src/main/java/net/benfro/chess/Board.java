@@ -1,5 +1,12 @@
 package net.benfro.chess;
 
+import com.google.common.collect.Lists;
+import lombok.Synchronized;
+import lombok.ToString;
+
+import java.util.List;
+
+@ToString(callSuper = true)
 public class Board extends DefaultGrid<Piece> {
 
    final static int SIZE = 8;
@@ -38,10 +45,36 @@ public class Board extends DefaultGrid<Piece> {
       return a.indexOf(c);
    }
 
-   // Synchronize?
+   @Synchronized
    public void doMove(Move move) {
       Piece piece = get(move.from);
       place(piece, move.to);
       place(null, move.from);
+   }
+
+   @Synchronized
+   public void undoMove(Move move) {
+      Piece piece = get(move.to);
+      place(piece, move.from);
+      place(null, move.to);
+   }
+
+   public void place(final List<Piece> pieces, final List<String> positions) {
+      for (int i = 0; i < pieces.size(); i++) {
+         place(pieces.get(i), positions.get(i));
+      }
+   }
+
+   @Override
+   protected List<List<Piece>> initGrid() {
+      List<List<Piece>> out = Lists.newArrayList();
+      for (int i = 0; i < getRowSize(); i++) {
+         List<Piece> row = Lists.newArrayList();
+         for (int j = 0; j < getColSize(); j++) {
+            row.add(Piece.emptyOf());
+         }
+         out.add(row);
+      }
+      return out;
    }
 }
